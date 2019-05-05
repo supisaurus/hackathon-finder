@@ -17,10 +17,14 @@ The project uses React Native
 <br />Follow the guide.
 
 
-## Running
+## Running locally
 
 start the android emulator created in Android Studio<br /><br />
 
 in cmd `cd (project-directory)`<br /><br />
 
 `react-native run-android`<br /><br />
+
+## For actual project demo (TODO)
+
+https://appetize.io
