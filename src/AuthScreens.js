@@ -12,8 +12,10 @@ import {
   Button,
   ThemeProvider,
   Input,
+  Divider
 } from 'react-native-elements';
-import { theme, FlexContainer, FlexItem, } from './Theme'
+import { theme, FlexContainer, FlexItem } from './Theme'
+import LinearGradient from 'react-native-linear-gradient';
 
 export class AuthLoadingScreen extends React.Component {
   constructor(props) {
@@ -42,13 +44,19 @@ export class AuthLoadingScreen extends React.Component {
 
 export class SignInScreen extends React.Component {
   static navigationOptions = {
-    title: 'Sign in',
+    headerMode: 'screen',
+    headerVisible: false,
+    headerBackTitle: null,
   };
   render() {
     const {navigate} = this.props.navigation;
     return (
       <ThemeProvider theme={theme}>
+        <LinearGradient colors={['#aa4b6b', '#6b6b83', '#3b8d99', '#373B44']} style={{flex: 1}}>
         <View style={theme.FlexContainer.style}>
+          <View style={theme.FlexLogo.style}>
+            <Text style={theme.Logo.style}>Hackathon Finder</Text>
+          </View>
           <View style={theme.FlexItem.style}>
             <Input
               placeholder='Email'
@@ -64,16 +72,23 @@ export class SignInScreen extends React.Component {
             />
           </View>
           <View style={theme.FlexItem.style}>
-            <Button
-              title="Forgot password?"
-              onPress={this._signInAsync}
-            />
-            <Button
-              title="Sign up"
-              onPress={this._signInAsync}
-            />
+          <View style={theme.FlexContainerHorizontal.style}>
+            <View style={theme.FlexItemHorizontal.style}>
+              <Button
+                title="Forgot password?"
+                onPress={this._signInAsync}
+              />
+            </View>
+            <View style={theme.FlexItemHorizontal.style}>
+              <Button
+                title="Sign up"
+                onPress={this._signInAsync}
+              />
+            </View>
+          </View>
           </View>
         </View>
+        </LinearGradient>
       </ThemeProvider>
     );
   }

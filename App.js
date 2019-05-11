@@ -15,7 +15,7 @@ export default class App extends React.Component {
 const AppStack = createStackNavigator(
   {
     Home: HomeScreen,
-    //Hackathon: HackathonScreen,
+    Hackathon: HackathonScreen,
   },
   {
     initialRouteName: 'Home',
