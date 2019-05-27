@@ -76,13 +76,13 @@ export class SignInScreen extends React.Component {
             <View style={theme.FlexItemHorizontal.style}>
               <Button
                 title="Forgot password?"
-                onPress={this._signInAsync}
+                onPress={() => navigate('ForgotPassword', {})}
               />
             </View>
             <View style={theme.FlexItemHorizontal.style}>
               <Button
                 title="Sign up"
-                onPress={this._signInAsync}
+                onPress={() => navigate('SignUp', {})}
               />
             </View>
           </View>
@@ -97,4 +97,74 @@ export class SignInScreen extends React.Component {
     await AsyncStorage.setItem('userToken', 'abc');
     this.props.navigation.navigate('App');
   };
+}
+
+export class SignUpScreen extends React.Component {
+  static navigationOptions = {
+    headerMode: 'screen',
+    headerVisible: false,
+    headerBackTitle: null,
+  };
+  render() {
+    const {navigate} = this.props.navigation;
+    return (
+      <ThemeProvider theme={theme}>
+        <LinearGradient colors={['#aa4b6b', '#6b6b83', '#3b8d99', '#373B44']} style={{flex: 1}}>
+        <View style={theme.FlexContainer.style}>
+          <View style={theme.FlexItem.style}>
+            <Input
+              placeholder='Name'
+              leftIcon={{ type: 'font-awesome', name: 'id-badge' }}
+            />
+            <Input
+              placeholder='Email'
+              leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+            />
+            <Input
+              placeholder='Password'
+              leftIcon={{ type: 'font-awesome', name: 'lock' }}
+            />
+            <Input
+              placeholder='Confirm Password'
+              leftIcon={{ type: 'font-awesome', name: 'lock' }}
+            />
+            <Button
+              title="Sign up!"
+              onPress={() => navigate('SignIn', {})}
+            />
+          </View>
+        </View>
+        </LinearGradient>
+      </ThemeProvider>
+    );
+  }
+}
+
+export class ForgotPasswordScreen extends React.Component {
+  static navigationOptions = {
+    headerMode: 'screen',
+    headerVisible: false,
+    headerBackTitle: null,
+  };
+  render() {
+    const {navigate} = this.props.navigation;
+    return (
+      <ThemeProvider theme={theme}>
+        <LinearGradient colors={['#aa4b6b', '#6b6b83', '#3b8d99', '#373B44']} style={{flex: 1}}>
+        <View style={theme.FlexContainer.style}>
+          <View style={theme.FlexItem.style}>
+            <Input
+              placeholder='Email'
+              leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+            />
+            <Button
+              title="Remind me"
+              onPress={() => navigate('SignIn', {})}
+            />
+          </View>
+        </View>
+        </LinearGradient>
+      </ThemeProvider>
+    );
+  }
 }

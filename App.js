@@ -1,6 +1,6 @@
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import React, {Component} from 'react';
-import { HomeScreen, HackathonScreen } from './src/AppScreens';
+import { HostHackathonScreen, HostScreen, HomeScreen, HackathonScreen, HackathonParticipantsScreen, HackathonForumScreen, MessageCenterScreen, MessageScreen, GeneralForumScreen, SettingsScreen, ProfileScreen } from './src/AppScreens';
 //import { HomeDemoScreen, HackathonDemoScreen } from './src/AppDemoScreens';
 import { AuthLoadingScreen, SignInScreen, ForgotPasswordScreen, SignUpScreen } from './src/AuthScreens';
 import { theme } from './src/Theme';
@@ -16,6 +16,14 @@ const AppStack = createStackNavigator(
   {
     Home: HomeScreen,
     Hackathon: HackathonScreen,
+    HackathonForum: MessageCenterScreen,
+    HackathonParticipants: HackathonParticipantsScreen,
+    MessageCenter: MessageCenterScreen,
+    PrivateMessage: MessageScreen,
+    GeneralForum: MessageCenterScreen,
+    Profile: ProfileScreen,
+    Host: HostScreen,
+    HostHackathon: HostHackathonScreen,
   },
   {
     initialRouteName: 'Home',
@@ -35,8 +43,8 @@ const AppDemoStack = createStackNavigator(
 const AuthStack = createStackNavigator(
   {
     SignIn: SignInScreen,
-    //SignUp: SignUpScreen,
-    //ForgotPassword: ForgotPasswordScreen,
+    SignUp: SignUpScreen,
+    ForgotPassword: ForgotPasswordScreen,
   },
   {
     initialRouteName: 'SignIn',

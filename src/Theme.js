@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Dimensions, View, Text, DeviceEventEmitter } from "react-native";
-// import Moment from 'react-moment';
+import { Dimensions, View, Text, DeviceEventEmitter, Picker } from "react-native";
+import Moment from 'react-moment';
 import moment from 'moment';
 import {
+  Avatar,
   Button,
   Input,
   Icon,
@@ -15,6 +16,87 @@ const scaledFontSize = window.width / 24;
 const font = 'Octovetica Free';
 
 //export const FlexContainer = (props) => <View {...props}></View>;
+
+export const SpecialButton = (props) => <Button {...props}></Button>;
+
+export class SentMessage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <View style={theme.SentMessageWrapper}>
+        <Text style={theme.SentDateWrapper}>
+          <Moment element={Text} format='h:mm a'>{this.props.date}</Moment>
+        </Text>
+        <Text style={theme.SentMessageContentWrapper}>
+          {this.props.message}
+        </Text>
+        <Avatar
+          rounded
+          source={this.props.avatar}
+          size='medium'
+        />
+      </View>
+    )
+  }
+}
+
+export class ReceivedMessage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <View style={theme.ReceivedMessageWrapper}>
+        <Avatar
+          rounded
+          source={this.props.avatar}
+          size='medium'
+        />
+        <Text style={theme.ReceivedMessageContentWrapper}>
+          {this.props.message}
+        </Text>
+        <Text style={theme.ReceivedDateWrapper}>
+          <Moment element={Text} format='h:mm a'>{this.props.date}</Moment>
+        </Text>
+      </View>
+    )
+  }
+}
+
+export class SearchIcon extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: 'upcoming'
+    };
+  }
+  render() {
+    return (
+      <View style={theme.SearchIcon}>
+      <Picker
+        selectedValue={this.state.selected}
+        mode='dialog'
+        style={theme.SearchIcon}
+        onValueChange={(itemValue, itemIndex) => {
+          this.setState({selected: itemValue});
+          this.props.onChangeSelection({key: itemValue, value: this.props.selectionOptions[itemIndex].value});
+        }}>
+        {
+          this.props.selectionOptions.map((l, i) => (
+              <Picker.Item
+                key={i}
+                label={l.value}
+                value={l.key}
+              />
+          ))
+        }
+      </Picker>
+      </View>
+    )
+  }
+}
 
 export class NotificationIcon extends React.Component {
   render() {
@@ -35,6 +117,33 @@ export class NotificationIcon extends React.Component {
         <View style={theme.NotificationWrapper.style}>
           <View style={theme.NotificationOverlay.style}>
             <Icon name='exclamation' type='font-awesome' color='#bf0d3c'/>
+          </View>
+          <View style={theme.NotificationIcon.style}>
+            <Icon name={this.props.name} type={this.props.type} color={this.props.color}/>
+          </View>
+        </View>
+      )
+    )
+  }
+}
+
+export class HeaderIcon extends React.Component {
+  render() {
+    return (
+      this.props.menu ?
+      (
+        <View style={theme.NotificationWrapperMenu.style}>
+          <View style={theme.NotificationOverlayMenu.style}>
+          </View>
+          <View style={theme.NotificationIconMenu.style}>
+            <Icon name={this.props.name} type={this.props.type} color={this.props.color}/>
+          </View>
+        </View>
+      )
+      :
+      (
+        <View style={theme.NotificationWrapper.style}>
+          <View style={theme.NotificationOverlay.style}>
           </View>
           <View style={theme.NotificationIcon.style}>
             <Icon name={this.props.name} type={this.props.type} color={this.props.color}/>
@@ -128,7 +237,8 @@ export class DateView extends React.Component {
             <Text style={theme.DateTextMonth.style}>{whenfromDay_f} {whenfromMonth_f}</Text>
             <Text style={theme.DateTextTime.style}>{whenfromTime_f}</Text>
           </View>
-          <Text style={theme.DateTextMonth.style}> - </Text>
+          <View style={theme.DateBoxDivider.style}>
+          </View>
           <View style={theme.DateBoxMini.style}>
             <Text style={theme.DateTextMonth.style}>{whentoDay_f} {whentoMonth_f}</Text>
             <Text style={theme.DateTextTime.style}>{whentoTime_f}</Text>
@@ -160,6 +270,51 @@ export class DateView extends React.Component {
   }
 }
 
+
+export class DateViewSingle extends React.Component {
+  render() {
+    const whenDay_f = moment(this.props.when).format('DD');
+    const whenMonth_f = moment(this.props.when).format('MMMM');
+    const whenYear_f = moment(this.props.when).format('YYYY');
+    const whenTime_f = moment(this.props.when).format('HH:mm');
+
+    return (
+      <View style={theme.DateboxWrapperSingle.style}>
+      { this.props.mini ?
+        (
+          <View style={theme.DateboxFlexMini.style}>
+          <View style={theme.DateBoxMiniSingle.style}>
+            <Text style={theme.DateTextMonth.style}>{whenTime_f}</Text>
+          </View>
+          <View style={theme.DateBoxDivider.style}>
+          </View>
+          <View style={theme.DateBoxMiniDescript.style}>
+            <Text style={theme.TimetableDescription.style}>{ this.props.description }</Text>
+          </View>
+          </View>
+        )
+        :
+        (
+          <View style={theme.DateboxFlex.style}>
+          <View style={theme.DateBox.style}>
+            <Text style={theme.DateTextDay.style}>{whenDay_f}</Text>
+            <Text style={theme.DateTextMonth.style}>{whenMonth_f}</Text>
+            <Text style={theme.DateTextYear.style}>{whenYear_f}</Text>
+            <Text style={theme.DateTextTime.style}>{whenTime_f}</Text>
+          </View>
+          <View style={theme.DateBoxDivider.style}>
+          </View>
+          <View style={theme.DateBoxMiniDescript.style}>
+            <Text style={theme.TimetableDescription.style}>{ this.props.description }</Text>
+          </View>
+          </View>
+        )
+      }
+      </View>
+    );
+  }
+}
+
 export const theme = {
   colors: {
   /*
@@ -168,6 +323,45 @@ export const theme = {
     grey0: 'green',
     greyOutline: 'black',
     */
+  },
+
+  InfoBoxRegister: {
+    style: {
+      type: 'solid',
+      buttonStyle: {
+        borderRadius: 8,
+        borderColor: '#FFFFFF',
+        backgroundColor: 'rgba(55, 59, 68, 0.8)',
+    //    underlayColor: 'rgba(55, 59, 68, 0.9)',
+        height: '40%',
+      },
+      containerStyle: {
+        padding: 6,
+        minHeight: window.height * 0.05 || '5%',
+      },
+      titleStyle: {
+        color: '#FFFFFF',
+        fontFamily: font,
+        fontSize: 26,
+      },
+    }
+  },
+
+  Button: {
+    type: 'outline',
+    buttonStyle: {
+      borderRadius: 8,
+      borderColor: '#FFFFFF',
+    },
+    containerStyle: {
+      marginBottom: window.height * 0.01 || '1%',
+      padding: 6,
+      minHeight: window.height * 0.05 || '5%',
+    },
+    titleStyle: {
+      color: '#FFFFFF',
+      fontFamily: font,
+    },
   },
 
   ListItem: {
@@ -229,13 +423,19 @@ export const theme = {
       flexWrap: 'nowrap',
       borderRadius: 8,
       borderColor: '#FFFFFF',
-      borderWidth: 2,
-      borderStyle: 'dotted',
+      borderWidth: 0.5,
+      borderStyle: 'solid',
     }
   },
 
   DateboxWrapper: {
     style: {
+    }
+  },
+
+  DateboxWrapperSingle: {
+    style: {
+      padding: 1,
     }
   },
 
@@ -262,6 +462,31 @@ export const theme = {
       flexWrap: 'nowrap',
       minWidth: window.width * 0.15 || '15%',
       minHeight: window.width * 0.15 || '15%',
+      width: '50%',
+      alignSelf: 'center',
+      alignItems: 'center',
+    }
+  },
+
+  DateBoxMiniSingle: {
+    style: {
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      minWidth: window.width * 0.15 || '15%',
+      minHeight: window.width * 0.15 || '15%',
+      width: '30%',
+      alignSelf: 'center',
+      alignItems: 'center',
+    }
+  },
+
+  DateBoxMiniDescript: {
+    style: {
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      minWidth: window.width * 0.15 || '15%',
+      minHeight: window.width * 0.15 || '15%',
+      width: '70%',
       alignSelf: 'center',
       alignItems: 'center',
     }
@@ -339,23 +564,6 @@ export const theme = {
     backgroundColor: '#FFFFFF',
   },
 
-  Button: {
-    type: 'outline',
-    buttonStyle: {
-      borderRadius: 8,
-      borderColor: '#FFFFFF',
-    },
-    containerStyle: {
-      marginBottom: window.height * 0.01 || '1%',
-      padding: 6,
-      minHeight: window.height * 0.05 || '5%',
-    },
-    titleStyle: {
-      color: '#FFFFFF',
-      fontFamily: font,
-    },
-  },
-
   Input: {
     inputStyle: {
       color: '#FFFFFF',
@@ -384,6 +592,15 @@ export const theme = {
       justifyContent: 'center',
       alignItems: 'stretch',
       marginTop: 2,
+    },
+  },
+
+  FlexContainerAlt: {
+    style: {
+      flex: 1,
+      flexDirection: 'column',
+    //  justifyContent: 'center',
+      alignItems: 'stretch',
     },
   },
 /*
@@ -426,8 +643,8 @@ export const theme = {
 
   FlexItemAlt: {
     style: {
-      marginRight: window.height * 0.05 || '5%',
-      marginLeft: window.height * 0.05 || '5%',
+  //    marginRight: window.height * 0.03 || '3%',
+  //    marginLeft: window.height * 0.03 || '3%',
     }
   },
 
@@ -484,6 +701,32 @@ export const theme = {
     }
   },
 
+  BackgroundView: {
+    backgroundColor: 'black',
+    style: {
+      backgroundColor: 'black',
+    }
+  },
+
+  SearchIcon: {
+    fontFamily: 'Octovetica Free',
+    fontSize: 26,
+    height: 60,
+    width: '90%',
+    itemTextStyle: {
+      fontFamily: 'Octovetica Free',
+      fontSize: 26,
+      paddingLeft: 4,
+    },
+    textStyle: {
+      fontFamily: 'Octovetica Free',
+      fontSize: 26,
+      paddingLeft: 4,
+    },
+    itemTextStyle:{fontSize: 26, fontFamily: 'Octovetica Free'},
+    activeItemTextStyle:{fontSize: 26, fontFamily: 'Octovetica Free'},
+  },
+
   HeaderMenu: {
     style: {
       flex:1,
@@ -491,7 +734,7 @@ export const theme = {
       marginLeft: 6,
       flexDirection: 'row',
       flexWrap: 'nowrap',
-      maxWidth: window.width * 0.10 || '10%',
+      maxWidth: window.width * 0.30 || '40%',
       alignItems: 'center',
     //  textAlign: 'center',
     }
@@ -507,16 +750,21 @@ export const theme = {
       margin: 0,
       padding: 0,
       width: '100%',
-      marginLeft: -2,
+      marginLeft: -1,
     },
     buttonStyle: {
-      backgroundColor: 'rgba(0,0,0,0.0)',
-      borderRadius: 8,
+    //  backgroundColor: 'rgba(0,0,0,0.0)',
+      borderTopLeftRadius: 8,
+      borderTopRightRadius: 8,
       borderWidth: 0.5,
       borderColor: '#FFFFFF',
       margin: 0,
       padding: 0,
       width: '100%',
+      backgroundColor: 'rgba(55, 59, 68, 0.8)'
+    },
+    selectedButtonStyle: {
+      backgroundColor: 'rgba(55, 59, 68, 1)',
     },
     textStyle: {
       color: '#FFFFFF',
@@ -530,15 +778,25 @@ export const theme = {
 
   ButtonGroupContent: {
     style: {
-      borderRadius: 8,
+    //  borderRadius: 8,
       borderColor: '#FFFFFF',
-      borderWidth: 2,
-      borderStyle: 'dotted',
-      padding: 2,
+      borderTopWidth: 0.5,
       flexGrow: 2,
     //  minHeight: '40%',
       alignSelf: 'stretch',
-      flexBasis: '70%',
+      flexBasis: '80%',
+  //    backgroundColor: 'rgba(55, 59, 68, 0.6)',
+    },
+  },
+
+  ButtonGroupContentAlt: {
+    style: {
+      borderColor: '#FFFFFF',
+      borderTopWidth: 0.5,
+      flexGrow: 2,
+    //  minHeight: '40%',
+      alignSelf: 'stretch',
+      flexBasis: '90%',
     },
   },
 
@@ -565,12 +823,11 @@ export const theme = {
   InfoBox: {
     style: {
       flexBasis: '20%',
-      borderRadius: 8,
+    //  borderRadius: 8,
       borderColor: '#FFFFFF',
-      borderWidth: 2,
-      borderStyle: 'dotted',
-      marginTop: 2,
+      borderBottomWidth: 0.5,
       padding: 5,
+      backgroundColor: 'rgba(55, 59, 68, 0.5)',
     }
   },
 
@@ -579,25 +836,45 @@ export const theme = {
       color: '#FFFFFF',
       fontFamily: font,
       fontSize: 18,
+      marginLeft: 24,
+      marginTop: 15,
     }
   },
 
-  InfoBoxRegister: {
+  TimetableDescription: {
     style: {
-      type: 'outline',
-      buttonStyle: {
-        borderRadius: 8,
-        borderColor: '#FFFFFF',
-      },
-      containerStyle: {
-        padding: 6,
-        minHeight: window.height * 0.05 || '5%',
-      },
-      titleStyle: {
-        color: '#FFFFFF',
-        fontFamily: font,
-      },
+      color: '#FFFFFF',
+      fontFamily: font,
+      fontSize: 18,
+      marginLeft: 10,
+      textAlign: 'center',
     }
+  },
+
+  SearchBar: {
+    searchIcon: {
+      color: '#FFFFFF',
+    },
+    textStyle: {
+      fontFamily: font,
+      fontSize: 18,
+    },
+    inputStyle: {
+      color: '#FFFFFF',
+      fontFamily: font,
+      fontSize: 18,
+    },
+    inputContainerStyle: {
+      backgroundColor: 'rgba(0,0,0,0.0)',
+    },
+    containerStyle: {
+      backgroundColor: 'rgba(0,0,0,0.0)',
+      borderBottomColor: 'white',
+    },
+    style: {
+      backgroundColor: 'rgba(0,0,0,0.0)',
+    },
+
   },
 
   NotificationWrapper: {
@@ -650,6 +927,70 @@ export const theme = {
       left: 25,
       zIndex: 20,
     }
+  },
+
+  SentMessageWrapper: {
+    padding: 2,
+    marginRight: 1,
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+
+  },
+
+  ReceivedMessageWrapper: {
+    padding: 2,
+    marginLeft: 1,
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+  },
+
+  SentDateWrapper: {
+    padding: 10,
+    borderWidth: 0.5,
+    borderColor: '#FFFFFF',
+  },
+
+  ReceivedDateWrapper: {
+    padding: 10,
+    borderWidth: 0.5,
+    borderColor: '#FFFFFF',
+  },
+
+  SentMessageContentWrapper: {
+    minHeight: '40%',
+    minWidth: '60%',
+    maxWidth: '60%',
+    padding: 10,
+    paddingRight: 22,
+    borderWidth: 0.5,
+    borderColor: '#FFFFFF',
+    backgroundColor: 'rgba(55, 59, 68, 0.9)',
+    borderTopRightRadius: 50,
+    borderBottomRightRadius: 50,
+    color: '#FFFFFF',
+    fontFamily: font,
+    fontSize: 18,
+  },
+
+  ReceivedMessageContentWrapper: {
+    minHeight: '40%',
+    minWidth: '60%',
+    maxWidth: '60%',
+    padding: 10,
+    paddingLeft: 22,
+    borderWidth: 0.5,
+    borderColor: '#FFFFFF',
+    backgroundColor: 'rgba(55, 59, 68, 0.2)',
+    borderTopLeftRadius: 50,
+    borderBottomLeftRadius: 50,
+    color: '#FFFFFF',
+    fontFamily: font,
+    fontSize: 18,
   },
 
 };
