@@ -25,6 +25,6 @@ in cmd `cd (project-directory)`<br /><br />
 
 `react-native run-android`<br /><br />
 
-## For actual project demo (TODO)
+## For actual project demo 
 
-https://appetize.io
+https://appetize.io/app/yyy45nzjvndrqv2wh9y7n5exkc?device=nexus5&scale=100&orientation=portrait&osVersion=8.1
